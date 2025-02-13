@@ -1,0 +1,131 @@
+---
+title: 'Tokens'
+openapi: 'GET /tokens/{address}'
+description: 'Get token information on Solana'
+---
+
+<Note>
+  Direct `/tokens` endpoint is not available. You must specify a token address in a format `/tokens/{address}` where `{address}` is the token address on Solana blockchain like `So11111111111111111111111111111111111111112`.
+</Note>
+
+The API provides two endpoints for token-related data:
+
+<Card title="GET /tokens/{address}" icon="circle-info" href="/api-reference/endpoint/tokens">
+  Get detailed latest data about a specific Solana token
+</Card>
+
+<Card title="GET /tokens/{address}/pools" icon="water" href="/api-reference/endpoint/pools">
+  View pools documentation to get liquidity pools data for a specific token
+</Card>
+
+
+### Path Parameters
+
+<ParamField path="address" type="string" required>
+  The unique identifier `address` of the token on Solana blockchain
+</ParamField>
+
+### Response Example
+
+```json
+{
+  "id": "So11111111111111111111111111111111111111112",
+  "name": "Wrapped SOL",
+  "symbol": "SOL",
+  "chain": "solana",
+  "decimals": 9,
+  "total_supply": 0,
+  "description": "",
+  "website": "",
+  "explorer": "",
+  "added_at": "2024-10-04T08:30:05Z",
+  "summary": {
+    "main_pool": "Czfq3xZZDmsdGdUyrNLtRhGc47cXcZtLG4crryfu44zE",
+    "price": 195.22104915720766,
+    "price_usd": 195.20586303844095,
+    "liquidity_usd": 26001938057.05152337007655,
+    "24h": {
+      "volume": 24513059.824273936,
+      "volume_usd": 9672251889.537561,
+      "sell": 13740150,
+      "buy": 9869616,
+      "txns": 23609987
+    },
+    "6h": {
+      "volume": 7022708.04444405,
+      "volume_usd": 6232525855.3000555,
+      "sell": 4212586,
+      "buy": 3030427,
+      "txns": 7243043
+    },
+    "1h": {
+      "volume": 974545.5907914588,
+      "volume_usd": 386157212.43357563,
+      "sell": 626411,
+      "buy": 452334,
+      "txns": 1078755
+    }
+  },
+  "last_updated": "2025-02-13T21:49:01.564050353Z"
+}
+```
+
+
+### Response Fields
+
+<ResponseField name="id" type="string">
+  Token's contract address
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Token name
+</ResponseField>
+
+<ResponseField name="symbol" type="string">
+  Token symbol
+</ResponseField>
+
+<ResponseField name="chain" type="string">
+  Blockchain network (always "solana")
+</ResponseField>
+
+<ResponseField name="decimals" type="integer">
+  Token decimals
+</ResponseField>
+
+<ResponseField name="summary" type="object">
+  <Expandable title="Token statistics">
+    <ResponseField name="main_pool" type="string">
+      Main liquidity pool address
+    </ResponseField>
+    <ResponseField name="price" type="number">
+      Current token price
+    </ResponseField>
+    <ResponseField name="price_usd" type="number">
+      Current token price in USD
+    </ResponseField>
+    <ResponseField name="liquidity_usd" type="number">
+      Total liquidity in USD
+    </ResponseField>
+    <ResponseField name="24h" type="object">
+      24-hour trading statistics
+    </ResponseField>
+    <ResponseField name="6h" type="object">
+      6-hour trading statistics
+    </ResponseField>
+    <ResponseField name="1h" type="object">
+      1-hour trading statistics
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+
+### Usage Example
+
+```bash
+curl -X GET "https://api-beta.dexpaprika.com/tokens/So11111111111111111111111111111111111111112"
+```
+
+<Note>
+  The token address must be a valid Solana token address. For example, Wrapped SOL token address is So11111111111111111111111111111111111111112
+</Note>

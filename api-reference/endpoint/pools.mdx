@@ -1,0 +1,113 @@
+---
+title: 'Pools'
+openapi: 'GET /tokens/{address}/pools'
+description: 'Get liquidity pools for Solana tokens'
+---
+
+Get all liquidity pools where a specific token is traded on Solana blockchain.
+
+## Path Parameters
+
+<ParamField path="address" type="string" required>
+  The unique identifier `address` of the token on Solana blockchain
+</ParamField>
+
+## Response Example
+
+```json
+{
+  "pools": [
+    {
+      "id": "C1MgLojNLWBKADvu9BHdtgzz1oZX4dZ5zGdGcgvvW8Wz",
+      "dex_id": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+      "dex_name": "Orca",
+      "chain": "solana",
+      "volume_usd": 20459859.2815893,
+      "created_at": "2024-01-31T04:35:25Z",
+      "created_at_block_number": 245197261,
+      "transactions": 21763,
+      "price_usd": 0.847779638544142,
+      "tokens": [
+        {
+          "id": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+          "name": "Jupiter",
+          "symbol": "JUP",
+          "chain": "solana",
+          "decimals": 6,
+          "total_supply": 9999979509174084
+        },
+        {
+          "id": "So11111111111111111111111111111111111111112",
+          "name": "Wrapped SOL",
+          "symbol": "SOL",
+          "chain": "solana",
+          "decimals": 9,
+          "total_supply": 0
+        }
+      ]
+    }
+  ],
+  "page_info": {
+    "limit": 100,
+    "page": 1,
+    "total_items": 219,
+    "total_pages": 3
+  }
+}
+```
+
+## Response Fields
+
+<ResponseField name="pools" type="Pool[]">
+  Array of liquidity pools where the specified token is traded
+</ResponseField>
+
+<ResponseField name="pools[].id" type="string">
+  Unique identifier of the liquidity pool
+</ResponseField>
+
+<ResponseField name="pools[].dex_id" type="string">
+  Unique identifier of the DEX where the pool is located
+</ResponseField>
+
+<ResponseField name="pools[].dex_name" type="string">
+  Name of the DEX where the pool is located (e.g. "Orca", "Meteora")
+</ResponseField>
+
+<ResponseField name="pools[].chain" type="string">
+  Blockchain where the pool exists
+</ResponseField>
+
+<ResponseField name="pools[].volume_usd" type="number">
+  Trading volume in USD
+</ResponseField>
+
+<ResponseField name="pools[].created_at" type="string">
+  UTC timestamp when the pool was created
+</ResponseField>
+
+<ResponseField name="pools[].created_at_block_number" type="number">
+  Block number when the pool was created
+</ResponseField>
+
+<ResponseField name="pools[].transactions" type="number">
+  Number of transactions in the pool
+</ResponseField>
+
+<ResponseField name="pools[].price_usd" type="number">
+  Current token price in USD
+</ResponseField>
+
+<ResponseField name="pools[].tokens" type="Token[]">
+  Array of tokens in the pool
+</ResponseField>
+
+## Usage Example
+
+```bash
+curl -X GET "https://api-beta.dexpaprika.com/networks/solana/tokens/JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN/pools"
+```
+
+<Note>
+  The token address must be a valid Solana token address. For example, USDC token address is EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
+</Note>

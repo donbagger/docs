@@ -1,94 +1,67 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.3",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "Solana DEX API",
+    "version": "1.0.0",
+    "description": "API for Solana token prices and liquidity pools data"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
+      "url": "https://api-beta.dexpaprika.com/networks/solana",
+      "description": "Production server"
     }
   ],
   "paths": {
-    "/plants": {
+    "/dexes": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
+        "summary": "Get DEXes",
+        "description": "Get a list of decentralized exchanges on Solana",
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "List of DEXes",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+                  "type": "object",
+                  "properties": {
+                    "dexes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "dex_id": {
+                            "type": "string"
+                          },
+                          "dex_name": {
+                            "type": "string"
+                          },
+                          "chain": {
+                            "type": "string"
+                          },
+                          "protocol": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "page_info": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "page": {
+                          "type": "integer"
+                        },
+                        "total_items": {
+                          "type": "integer"
+                        },
+                        "total_pages": {
+                          "type": "integer"
+                        }
+                      }
+                    }
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -96,32 +69,180 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/tokens/{address}": {
+      "get": {
+        "summary": "Get Token Details",
+        "description": "Get detailed latest data about a specific Solana token",
         "parameters": [
           {
-            "name": "id",
+            "name": "address",
             "in": "path",
-            "description": "ID of plant to delete",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+              "type": "string"
+            },
+            "description": "The unique identifier address of the token on Solana blockchain"
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "Token details",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "symbol": {
+                      "type": "string"
+                    },
+                    "chain": {
+                      "type": "string"
+                    },
+                    "decimals": {
+                      "type": "integer"
+                    },
+                    "total_supply": {
+                      "type": "integer"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "website": {
+                      "type": "string"
+                    },
+                    "explorer": {
+                      "type": "string"
+                    },
+                    "added_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "main_pool": {
+                          "type": "string"
+                        },
+                        "price": {
+                          "type": "number"
+                        },
+                        "price_usd": {
+                          "type": "number"
+                        },
+                        "liquidity_usd": {
+                          "type": "number"
+                        },
+                        "24h": {
+                          "type": "object",
+                          "properties": {
+                            "volume": {
+                              "type": "number"
+                            },
+                            "volume_usd": {
+                              "type": "number"
+                            },
+                            "sell": {
+                              "type": "integer"
+                            },
+                            "buy": {
+                              "type": "integer"
+                            },
+                            "txns": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "last_updated": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tokens/{address}/pools": {
+      "get": {
+        "summary": "Get Token Pools",
+        "description": "Get all liquidity pools where a specific token is traded",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier address of the token on Solana blockchain"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PoolsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "summary": "Search",
+        "description": "Search for tokens, pools, and DEXes on Solana",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search term to match against token names, pool addresses, or DEX identifiers"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tokens": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Token"
+                      }
+                    },
+                    "pools": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Pool"
+                      }
+                    },
+                    "dexes": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Dex"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -132,63 +253,160 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "Token": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string"
+          },
           "name": {
-            "description": "The name of the plant",
             "type": "string"
           },
-          "tag": {
-            "description": "Tag to specify the type",
+          "symbol": {
             "type": "string"
+          },
+          "price_usd": {
+            "type": "number"
+          },
+          "liquidity_usd": {
+            "type": "number"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+      "TokenInfo": {
         "type": "object",
         "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
+          "id": {
+            "type": "string",
+            "description": "Token's contract address"
           },
-          "message": {
+          "name": {
+            "type": "string",
+            "description": "Token name"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Token symbol"
+          },
+          "chain": {
+            "type": "string",
+            "description": "Blockchain network (always \"solana\")"
+          },
+          "decimals": {
+            "type": "integer",
+            "description": "Token decimals"
+          },
+          "total_supply": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total token supply"
+          }
+        }
+      },
+      "Pool": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the liquidity pool"
+          },
+          "dex_id": {
+            "type": "string",
+            "description": "Unique identifier of the DEX where the pool is located"
+          },
+          "dex_name": {
+            "type": "string",
+            "description": "Name of the DEX where the pool is located (e.g. \"Orca\", \"Meteora\")"
+          },
+          "chain": {
+            "type": "string",
+            "description": "Blockchain where the pool exists"
+          },
+          "volume_usd": {
+            "type": "number",
+            "format": "double",
+            "description": "Trading volume in USD"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC timestamp when the pool was created"
+          },
+          "created_at_block_number": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Block number when the pool was created"
+          },
+          "transactions": {
+            "type": "integer",
+            "description": "Number of transactions in the pool"
+          },
+          "price_usd": {
+            "type": "number",
+            "format": "double",
+            "description": "Current token price in USD"
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TokenInfo"
+            },
+            "description": "Array of tokens in the pool"
+          }
+        }
+      },
+      "PoolsResponse": {
+        "type": "object",
+        "properties": {
+          "pools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pool"
+            },
+            "description": "Array of liquidity pools"
+          },
+          "page_info": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "PageInfo": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Number of items per page"
+          },
+          "page": {
+            "type": "integer",
+            "description": "Current page number"
+          },
+          "total_items": {
+            "type": "integer",
+            "description": "Total number of items across all pages"
+          },
+          "total_pages": {
+            "type": "integer",
+            "description": "Total number of pages"
+          }
+        }
+      },
+      "Dex": {
+        "type": "object",
+        "properties": {
+          "dex_id": {
+            "type": "string"
+          },
+          "dex_name": {
+            "type": "string"
+          },
+          "chain": {
+            "type": "string"
+          },
+          "protocol": {
             "type": "string"
           }
         }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
       }
     }
   }

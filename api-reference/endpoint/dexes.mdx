@@ -1,0 +1,26 @@
+---
+title: 'DEXes'
+openapi: 'GET /dexes'
+description: 'Get a list of decentralized exchanges on Solana'
+---
+
+## Response Example
+
+```json
+{
+  "dexes": [
+    {
+      "dex_id": "raydium",
+      "dex_name": "Raydium",
+      "chain": "solana",
+      "protocol": "raydium"
+    }
+  ],
+  "page_info": {
+    "limit": 100,
+    "page": 1,
+    "total_items": 0,
+    "total_pages": 0
+  }
+}
+```

@@ -1,33 +1,103 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'Getting Started'
+sidebarTitle: "Introduction"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+The Solana DEX API provides real-time data about tokens, liquidity pools, and decentralized exchanges on Solana blockchain. Let's make your first API call!
 
-## Welcome
+<CardGroup>
+  <Card 
+    title="Tokens" 
+    icon="coins"
+    href="/api-reference/endpoint/tokens"
+  >
+    Get detailed information about any token on Solana
+  </Card>
+  <Card
+    title="Pools"
+    icon="water"
+    href="/api-reference/endpoint/pools"
+  >
+    Access liquidity pool data and trading statistics
+  </Card>
+  <Card
+    title="DEXes"
+    icon="building-columns"
+    href="/api-reference/endpoint/dexes"
+  >
+    List all decentralized exchanges on Solana
+  </Card>
+  <Card
+    title="Search"
+    icon="magnifying-glass"
+    href="/api-reference/endpoint/search"
+  >
+    Search for tokens, pools, and DEXes
+  </Card>
+</CardGroup>
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+## Quick Start
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+```bash
+curl -X GET "https://api-beta.dexpaprika.com/networks/solana/tokens/So11111111111111111111111111111111111111112"
+```
 
-## Authentication
-
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+This will return current data about Wrapped SOL (SOL):
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
+{
+  "id": "So11111111111111111111111111111111111111112",
+  "name": "Wrapped SOL",
+  "symbol": "SOL",
+  "chain": "solana",
+  "price_usd": 195.22,
+  "summary": {
+    "volume_usd": 9672251889.53,
+    "liquidity_usd": 26001938057.05
   }
-]
+}
 ```
+
+## Base URL
+
+All API endpoints use the following base URL:
+
+```
+https://api-beta.dexpaprika.com/networks/solana
+```
+
+
+## Common Use Cases
+
+Here are some popular ways to use our API:
+
+<AccordionGroup>
+  <Accordion title="Track Token Prices">
+    ```bash
+    # Get USDC price and trading data
+    curl -X GET "https://api-beta.dexpaprika.com/networks/solana/tokens/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+    ```
+  </Accordion>
+  <Accordion title="Monitor Liquidity Pools">
+    ```bash
+    # Get all pools where SOL is traded
+    curl -X GET "https://api-beta.dexpaprika.com/networks/solana/tokens/So11111111111111111111111111111111111111112/pools"
+    ```
+  </Accordion>
+  <Accordion title="Search Tokens">
+    ```bash
+    # Search for "Jupiter" token
+    curl -X GET "https://api-beta.dexpaprika.com/networks/solana/search?query=jupiter"
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Rate Limits
+
+The API is currently in beta and free to use with a rate limit of:
+- 1 request per second
+- 10,000 requests per day
+
+<Note>
+  Need higher limits? [Contact us](mailto:support@dexpaprika.com) to discuss enterprise options.
+</Note>

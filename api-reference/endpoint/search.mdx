@@ -1,0 +1,73 @@
+---
+title: 'Search'
+openapi: 'GET /search'
+description: 'Search for tokens, pools, and DEXes on Solana'
+---
+
+# Search API
+
+Perform a search query to find tokens, liquidity pools, and decentralized exchanges.
+
+## Parameters
+
+<ParamField query="query" type="string" required>
+  Search term to match against token names, pool addresses, or DEX identifiers
+</ParamField>
+
+## Response
+
+<ResponseField name="tokens" type="Token[]">
+  Array of matching tokens with their metadata and market data
+</ResponseField>
+
+<ResponseField name="pools" type="Pool[]">
+  Array of matching liquidity pools with their trading information
+</ResponseField>
+
+<ResponseField name="dexes" type="Dex[]">
+  Array of matching DEXes with their volume and transaction data
+</ResponseField>
+
+## Response Example
+
+```json
+{
+  "tokens": [
+    {
+      "id": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "price_usd": 1.00,
+      "liquidity_usd": 100000000.00
+    }
+  ],
+  "pools": [
+    {
+      "id": "58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2",
+      "dex_name": "Orca",
+      "volume_usd": 250000.00,
+      "liquidity_usd": 1500000.00,
+      "price_usd": 1.00
+    }
+  ],
+  "dexes": [
+    {
+      "id": "orca",
+      "name": "Orca",
+      "volume_usd_24h": 5000000.00,
+      "txns_24h": 12000,
+      "pools_count": 250
+    }
+  ]
+}
+```
+
+## Usage Example
+
+```bash
+curl -X GET "https://api-beta.dexpaprika.com/search?query=usdc"
+```
+
+<Note>
+  The search is case-insensitive and will return empty arrays for categories with no matches.
+</Note>
